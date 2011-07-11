@@ -13,21 +13,31 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package pre793;
+package pre793.simulations.two_clients;
 
-//
-// TODO auto-generated module
-//
-simple Server
+import ned.DatarateChannel;
+import pre793.Server;
+import pre793.Client;
+import pre793.Router;
+
+network Two_clients
 {
-    parameters:
-        double latency @unit(s); // fixed time to process single packet 
-        double throughput @unit(bps); // server responce throughput 
-        int queueSize; // size of server internal queue
-  		string ignore = default(""); // clients to not reply
-  		
-    @display("i=device/server2");
-    gates:
-        inout port;
-        inout spam_port[];
+    @display("bgb=537,302");
+    submodules:
+        router: Router {
+            @display("p=131,91");
+        }
+        client1: Client {
+            @display("p=42,34");
+        }
+        client2: Client {
+            @display("p=42,137");
+        }
+        server: Server {
+            @display("p=310,92");
+        }
+    connections:
+        client1.port <--> DatarateChannel <--> router.port++;
+        client2.port <--> DatarateChannel <--> router.port++;
+        router.port++ <--> DatarateChannel <--> server.port;
 }

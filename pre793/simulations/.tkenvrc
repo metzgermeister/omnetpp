@@ -1,7 +1,7 @@
 # Partial Tkenv config file -- see $HOME/.tkenvrc as well
-inspector "Two_servers" "Two_servers" "2" "565x340+66+87:normal"
+inspector "Two_servers" "Two_servers" "2" "565x340+54+179:normal"
 inspector "simulation.scheduled-events." "cMessage" "1" "460x312+22+29:normal"
-inspector "TwoRouters" "TwoRouters" "2" "565x340+22+29:normal"
-inspector "Network" "Network" "2" "565x340+66+87:normal"
 inspector "Test" "Test" "2" "565x340+22+29:normal"
+inspector "Network" "Network" "2" "565x340+66+87:normal"
+inspector "TwoRouters" "TwoRouters" "2" "565x340+22+29:normal"
 

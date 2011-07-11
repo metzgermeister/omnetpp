@@ -28,6 +28,8 @@ simple Client
         
         string destination = default("server"); // server name
         
+        bool generator = default(false); // true for simple source
+        
      @display("i=device/pc2");          
      gates:
         inout port;

@@ -36,7 +36,7 @@ class Server : public cSimpleModule
 	double throughput;
 	int maxQueueSize;
 	std::queue<SimplePacket*> queue;
-
+	std::set<std::string> clientsToIgnore;
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
 };

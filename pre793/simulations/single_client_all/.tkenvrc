@@ -1,0 +1,4 @@
+# Partial Tkenv config file -- see $HOME/.tkenvrc as well
+inspector "Single_client_all.router" "Router" "1" "608x525+-1+-23:normal"
+inspector "Single_client_all" "Single_client_all" "2" "565x340+443+155:normal"
+

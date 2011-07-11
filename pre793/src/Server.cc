@@ -24,6 +24,14 @@ void Server::initialize()
 	latency = par("latency").doubleValue();
 	maxQueueSize = par("queueSize").longValue();
 
+	///////////// COPYPASTE
+	std::stringstream ss(par("ignore").stdstringValue());
+	std::string s;
+	while(ss >> s) {
+		clientsToIgnore.insert(s);
+	}
+	///////////// COPYPASTE
+
 	state = IDLE;
 }
 
@@ -86,12 +94,14 @@ void Server::handleMessage(cMessage *msg)
 				scheduleAt(gateFreeTime, msg);
 			} else {
 				// sending
-				ev << "sending ACK to " << current->getName() << endl;
+				if(clientsToIgnore.count(current->getName()) == 0) {
+					ev << "sending ACK to " << current->getName() << endl;
+					SimplePacket *ack = new SimplePacket(this->getName(), ACK);
+					ack->setDest(current->getName());
+					ack->setByteLength(4);
+					send(ack, gate("port$o"));
+				}
 
-				SimplePacket *ack = new SimplePacket(this->getName(), ACK);
-				ack->setDest(current->getName());
-				ack->setByteLength(4);
-				send(ack, gate("port$o"));
 				delete current;
 
 				state = IDLE;

@@ -13,30 +13,17 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __PRE793_CLIENT_H_
-#define __PRE793_CLIENT_H_
+package pre793;
 
-#include <omnetpp.h>
-
-/**
- * TODO - Generated class
- */
-class Client : public cSimpleModule
+//
+// TODO auto-generated module
+//
+simple ACKGenerator
 {
-  protected:
-
-	cOutVector acks;
-
-	std::string destination;
-
-	int64 acksToReceive;
-	int64 packetSize;
-	double sendingDelay;
-
-	bool generator;
-
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
-};
-
-#endif
+    parameters:
+        double sendingRate @unit(bps);
+        string destination;
+        @display("i=misc/cloud");
+    gates:
+        inout port;
+}

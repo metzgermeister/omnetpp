@@ -22,39 +22,12 @@ Define_Module(Router)
 ;
 
 void Router::initialize() {
-	class SimplePacketCmp  {
-		std::map<std::string, int> *pri;
-	public:
-		SimplePacketCmp(std::map<std::string, int> *aPri) {
-			this->pri = aPri;
-		}
-		bool operator()(SimplePacket* a, SimplePacket* b) const {
-			if (a->getKind() != b->getKind()) {
-				return a->getKind() > b->getKind();
-			}
-			int aa = (*pri)[a->getOwner()->getName()];
-			int bb = (*pri)[b->getOwner()->getName()];
-			if (aa == 0) {
-				aa = 1000;
-			}
-			if (bb == 0) {
-				bb = 1000;
-			}
-			return aa > bb;
-		}
-	};
 
+	qsize.setName("Queue size");
 
-	class mycmp : std::binary_function <SimplePacket* ,SimplePacket* ,bool> {
-	public:
-		bool operator()(const SimplePacket* a, const SimplePacket* b) const {
-			return false;
-		}
-	};
-
-//	queue = std::priority_queue<SimplePacket*>(SimplePacketCmp(&pri), std::vector<SimplePacket*>());
-
-	queue = std::priority_queue<SimplePacket*>(std::greater<SimplePacket*>(), std::vector<SimplePacket*>());
+	queue = std::priority_queue<SimplePacket*, std::vector<SimplePacket*>,
+			SimplePacketCmp>(SimplePacketCmp(&pri),
+			std::vector<SimplePacket*>());
 
 	std::string priorities = par("priorities").stdstringValue();
 	std::stringstream ss(priorities);
@@ -67,6 +40,7 @@ void Router::initialize() {
 	throughput = par("throughput").doubleValue();
 	latency = par("latency").doubleValue();
 	maxQueueSize = par("queueSize").longValue();
+	currentQueueSize = 0;
 
 	//	// determine gate-module coincidence
 	//	for (int i = 0; i < gateSize("port$o"); ++i) {
@@ -120,13 +94,23 @@ void Router::initialize() {
 			//			}
 		}
 	}
+
+	///////////// COPYPASTE
+	ev << "ignore = " << par("ignore").stdstringValue() << endl;
+	std::stringstream ss2(par("ignore").stdstringValue());
+	std::string s2;
+	while (ss2 >> s2) {
+		clientsToIgnore.insert(s2);
+	}
+	///////////// COPYPASTE
 }
 
 void Router::handleMessage(cMessage *msg) {
 	//	delete msg;
 	//	return;
 
-	ev << "queue size before = " << queue.size() << endl;
+	qsize.record(currentQueueSize);
+	ev << "queue size before event = " << currentQueueSize << " B" << endl;
 	if (dynamic_cast<SimplePacket *> (msg) != NULL) {
 		// packet
 		ev << "state: " << state << endl;
@@ -134,15 +118,18 @@ void Router::handleMessage(cMessage *msg) {
 				<< endl;
 		SimplePacket *pkt = (SimplePacket *) msg;
 
-		if ((int) queue.size() < maxQueueSize) {
+		if (currentQueueSize + pkt->getByteLength() <= maxQueueSize) {
 			if (queue.size() == 0 && state == IDLE) {
 				scheduleAt(simTime(),
 						new cMessage((std::string(this->getName())
 								+ " self-message loop").c_str()));
 			}
+			currentQueueSize += pkt->getByteLength();
 			queue.push(pkt);
+			ev << "pushed!" << endl;
 		} else {
 			// drop packet
+			ev << "dropped!" << endl;
 			delete pkt;
 		}
 	} else {
@@ -155,6 +142,7 @@ void Router::handleMessage(cMessage *msg) {
 			if (queue.size() > 0) {
 				current = queue.top();
 				queue.pop();
+				currentQueueSize -= current->getByteLength();
 				// process
 				double sendingDelay = current->getBitLength() / throughput;
 				//				ev << sendingDelay << endl;
@@ -179,9 +167,14 @@ void Router::handleMessage(cMessage *msg) {
 				scheduleAt(gateFreeTime, msg);
 			} else {
 				// sending
-				ev << "sending packet from " << current->getName() << " id="
-						<< current->getId() << endl;
-				send(current, gateId);
+
+				if (clientsToIgnore.count(current->getName()) == 0) {
+					ev << "sending packet from " << current->getName()
+							<< " id=" << current->getId() << endl;
+					send(current, gateId);
+				} else {
+					//					delete current;
+				}
 				//				queue.pop();
 				state = IDLE;
 				scheduleAt(simTime(), msg);

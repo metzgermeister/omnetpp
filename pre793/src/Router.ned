@@ -23,9 +23,11 @@ simple Router
     parameters:
         double latency @unit(s); // fixed time to process single packet 
         double throughput @unit(bps); // router throughput 
-        int queueSize; // size of router internal queue
+        int queueSize @unit(B); // size of router internal queue
         
         string priorities = default(""); // priorities
+        
+        string ignore = default(""); // clients to not retransmit
         
     @display("i=device/smallrouter");
     gates:

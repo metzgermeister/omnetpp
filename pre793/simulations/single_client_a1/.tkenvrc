@@ -1,0 +1,3 @@
+# Partial Tkenv config file -- see $HOME/.tkenvrc as well
+inspector "Single_client_a1" "Single_client_a1" "2" "565x340+-5+183:normal"
+

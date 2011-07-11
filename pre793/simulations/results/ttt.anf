@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scave:Analysis xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:scave="http://www.omnetpp.org/omnetpp/scave">
+  <inputs>
+    <inputs name="/pre793/simulations/results/General-0.sca"/>
+    <inputs name="/pre793/simulations/results/General-0.vci"/>
+    <inputs name="/pre793/simulations/results/General-0.vec"/>
+    <inputs name="/pre793/simulations/results/General-1.sca"/>
+    <inputs name="/pre793/simulations/results/General-1.vci"/>
+    <inputs name="/pre793/simulations/results/General-1.vec"/>
+    <inputs name="/pre793/simulations/results/General-2.sca"/>
+    <inputs name="/pre793/simulations/results/General-2.vci"/>
+    <inputs name="/pre793/simulations/results/General-2.vec"/>
+    <inputs name="/pre793/simulations/results/General-3.sca"/>
+    <inputs name="/pre793/simulations/results/General-3.vci"/>
+    <inputs name="/pre793/simulations/results/General-3.vec"/>
+    <inputs name="/pre793/simulations/results/General-4.sca"/>
+    <inputs name="/pre793/simulations/results/General-4.vci"/>
+    <inputs name="/pre793/simulations/results/General-4.vec"/>
+  </inputs>
+  <datasets/>
+  <chartSheets/>
+</scave:Analysis>

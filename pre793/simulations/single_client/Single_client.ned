@@ -13,30 +13,31 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __PRE793_CLIENT_H_
-#define __PRE793_CLIENT_H_
+package pre793.simulations.single_client;
 
-#include <omnetpp.h>
+import ned.DatarateChannel;
+import pre793.Server;
+import pre793.Router;
+import pre793.Client;
 
-/**
- * TODO - Generated class
- */
-class Client : public cSimpleModule
+
+//
+// TODO Auto-generated network
+//
+network Single_client
 {
-  protected:
-
-	cOutVector acks;
-
-	std::string destination;
-
-	int64 acksToReceive;
-	int64 packetSize;
-	double sendingDelay;
-
-	bool generator;
-
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
-};
-
-#endif
+    @display("bgb=312,159");
+    submodules:
+        client: Client {
+            @display("p=25,71");
+        }
+        router: Router {
+            @display("p=119,70");
+        }
+        server: Server {
+            @display("p=206,71");
+        }
+    connections:
+        client.port <--> DatarateChannel <--> router.port++;
+        router.port++ <--> DatarateChannel <--> server.port;
+}

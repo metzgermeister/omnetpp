@@ -28,7 +28,7 @@ PROJECTRELATIVE_PATH = /src
 O = $(PROJECT_OUTPUT_DIR)/$(CONFIGNAME)/$(PROJECTRELATIVE_PATH)
 
 # Object files for local .cc and .msg files
-OBJS = $O/Client.o $O/Router.o $O/Server.o $O/SimplePacket_m.o
+OBJS = $O/ACKGenerator.o $O/Client.o $O/Router.o $O/Server.o $O/SimplePacket_m.o
 
 # Message files
 MSGFILES = \

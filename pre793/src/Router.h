@@ -20,8 +20,6 @@
 #include <queue>
 #include "SimplePacket_m.h"
 
-
-
 enum State {
 	IDLE = 0, BUSY = 1
 };
@@ -29,24 +27,55 @@ enum State {
 /**
  * TODO - Generated class
  */
-class Router : public cSimpleModule
-{
-  protected:
+class Router: public cSimpleModule {
+protected:
 
+	class SimplePacketCmp {
+		std::map<std::string, int> *pri;
+	public:
+		SimplePacketCmp(std::map<std::string, int> *aPri) {
+			this->pri = aPri;
+		}
+		SimplePacketCmp() {
+			this->pri = NULL;
+		}
+		bool operator()(SimplePacket* a, SimplePacket* b) const {
+			if (a->getKind() != b->getKind()) {
+				return a->getKind() > b->getKind();
+			}
+			int aa = (*pri)[a->getName()];
+			int bb = (*pri)[b->getName()];
+			if (aa == 0) {
+				aa = 1000;
+			}
+			if (bb == 0) {
+				bb = 1000;
+			}
+			return aa > bb;
+		}
+	};
+
+	cOutVector qsize;
 
 	State state;
 	SimplePacket* current;
 	double latency;
 	double throughput;
-	int maxQueueSize;
+
+	int64 maxQueueSize;
+	int64 currentQueueSize;
+
 	std::map<std::string, int> destinations;
-//	std::map<std::string, cTopology*> routes;
-	std::priority_queue<SimplePacket*> queue;
+	//	std::map<std::string, cTopology*> routes;
+	std::priority_queue<SimplePacket*, std::vector<SimplePacket*>,
+			SimplePacketCmp> queue;
 
 	std::map<std::string, int> pri;
 
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
+	std::set<std::string> clientsToIgnore;
+
+	virtual void initialize();
+	virtual void handleMessage(cMessage *msg);
 };
 
 #endif

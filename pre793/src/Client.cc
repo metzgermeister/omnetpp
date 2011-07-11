@@ -31,7 +31,14 @@ void Client::initialize() {
 	sendingDelay = 8.0 * packetSize / par("sendingRate").doubleValue();
 
 	ev << sendingDelay << endl;
-	scheduleAt(simTime(), new cMessage("self-message loop"));
+
+
+	if(par("sendingRate").doubleValue() > 0) {
+		scheduleAt(simTime(), new cMessage("self-message loop"));
+	}
+
+	generator = par("generator").boolValue();
+
 }
 
 void Client::handleMessage(cMessage *msg) {
