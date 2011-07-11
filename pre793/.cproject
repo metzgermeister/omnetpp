@@ -43,6 +43,7 @@
 </folderInfo>
 <folderInfo id="org.omnetpp.cdt.gnu.config.debug.1447380353.1078741822" name="/" resourcePath="simulations/single_client_a2">
 <toolChain id="org.omnetpp.cdt.gnu.toolchain.debug.1395295359" name="GCC for OMNeT++" superClass="org.omnetpp.cdt.gnu.toolchain.debug" unusedChildren="">
+<targetPlatform binaryParser="org.eclipse.cdt.core.ELF;org.eclipse.cdt.core.MachO;org.eclipse.cdt.core.PE" id="org.omnetpp.cdt.targetPlatform" isAbstract="false" name="Windows, Linux, Mac" osList="win32,linux,macosx" superClass="org.omnetpp.cdt.targetPlatform"/>
 <tool id="cdt.managedbuild.tool.gnu.archiver.base.2139948949" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base.1515294804"/>
 <tool id="cdt.managedbuild.tool.gnu.cpp.compiler.base.2042760730" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base.1505590107">
 <inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1294236391" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
@@ -386,6 +387,7 @@
 </folderInfo>
 <folderInfo id="org.omnetpp.cdt.gnu.config.release.1456643633.1157634440" name="/" resourcePath="simulations/single_client_a2">
 <toolChain id="org.omnetpp.cdt.gnu.toolchain.release.2038620522" name="GCC for OMNeT++" superClass="org.omnetpp.cdt.gnu.toolchain.release" unusedChildren="">
+<targetPlatform binaryParser="org.eclipse.cdt.core.ELF;org.eclipse.cdt.core.MachO;org.eclipse.cdt.core.PE" id="org.omnetpp.cdt.targetPlatform" isAbstract="false" name="Windows, Linux, Mac" osList="win32,linux,macosx" superClass="org.omnetpp.cdt.targetPlatform"/>
 <tool id="cdt.managedbuild.tool.gnu.archiver.base.829804637" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base.1094444662"/>
 <tool id="cdt.managedbuild.tool.gnu.cpp.compiler.base.1291104469" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base.724904060">
 <inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.2010380868" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>

@@ -25,6 +25,7 @@ simple Server
         double throughput @unit(bps); // server responce throughput 
         int queueSize; // size of server internal queue
   		string ignore = default(""); // clients to not reply
+  		string foo = default(""); // for debug purposes
   		
     @display("i=device/server2");
     gates:

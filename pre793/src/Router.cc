@@ -173,7 +173,7 @@ void Router::handleMessage(cMessage *msg) {
 							<< " id=" << current->getId() << endl;
 					send(current, gateId);
 				} else {
-					//					delete current;
+					delete current;
 				}
 				//				queue.pop();
 				state = IDLE;

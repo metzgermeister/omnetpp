@@ -20,6 +20,7 @@ Define_Module(Server);
 
 void Server::initialize()
 {
+	ev << "foo = " << par("foo").stdstringValue() << endl;
 	throughput = par("throughput").doubleValue();
 	latency = par("latency").doubleValue();
 	maxQueueSize = par("queueSize").longValue();
