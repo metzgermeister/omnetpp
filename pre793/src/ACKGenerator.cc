@@ -16,35 +16,42 @@
 #include "ACKGenerator.h"
 #include "SimplePacket_m.h"
 
-Define_Module(ACKGenerator);
+Define_Module(ACKGenerator)
+;
 
-void ACKGenerator::initialize()
-{
+void ACKGenerator::initialize() {
 	rate = par("sendingRate").doubleValue();
 	dest = par("destination").stdstringValue();
-	if(rate > 0) {
+	if (rate > 0) {
 		sendingDelay = 8.0 * 4 / rate;
 		scheduleAt(simTime(), new cMessage("self-message loop"));
 	}
+	finish = false;
 }
 
-void ACKGenerator::handleMessage(cMessage *msg)
-{
+void ACKGenerator::handleMessage(cMessage *msg) {
+	if(msg->getName() == std::string("FINISH")) {
+		finish = true;
+		delete msg;
+		return;
+	}
+	simtime_t delay = 0;
 	cChannel *ch = gate("port$o")->getChannel();
 	if (ch->isBusy()) {
-		// wait
-		ev << "waiting for free channel" << endl;
 		simtime_t gateFreeTime = ch->getTransmissionFinishTime();
-		scheduleAt(gateFreeTime, msg);
-	} else {
-		// send a packet
-		SimplePacket *ack = new SimplePacket(this->getName(), ACK);
-		ack->setDest(dest.c_str());
-		ack->setByteLength(4);
-		send(ack, gate("port$o"));
+		delay = gateFreeTime - simTime();
+	}
+	// send a packet
+	SimplePacket *ack = new SimplePacket(this->getName(), ACK);
+	ack->setDest(dest.c_str());
+	ack->setByteLength(4);
+	sendDelayed(ack, delay, gate("port$o"));
 
-		// schedule next event
-		simtime_t processTime = simTime() + exponential(sendingDelay);
+	// schedule next event
+	simtime_t processTime = simTime() + exponential(sendingDelay);
+	if(!finish) {
 		scheduleAt(processTime, msg);
+	} else {
+		delete msg;
 	}
 }

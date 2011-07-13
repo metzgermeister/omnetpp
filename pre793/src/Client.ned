@@ -30,6 +30,8 @@ simple Client
         
         bool generator = default(false); // true for simple source
         
+        string ignore = default(""); // modules to shut down after finish
+        
      @display("i=device/pc2");          
      gates:
         inout port;

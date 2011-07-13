@@ -35,6 +35,8 @@ class Client : public cSimpleModule
 
 	bool generator;
 
+	std::set<std::string> spammers;
+
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
 };

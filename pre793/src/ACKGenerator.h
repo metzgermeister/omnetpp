@@ -28,6 +28,7 @@ class ACKGenerator : public cSimpleModule
 	double rate;
 	double sendingDelay;
 	std::string dest;
+	bool finish;
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
 };

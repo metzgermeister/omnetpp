@@ -26,4 +26,5 @@ simple ACKGenerator
         @display("i=misc/cloud");
     gates:
         inout port;
+        input info @directIn; // for internal messages
 }

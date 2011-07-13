@@ -39,6 +39,14 @@ void Client::initialize() {
 
 	generator = par("generator").boolValue();
 
+	///////////// COPYPASTE
+	ev << "ignore = " << par("ignore").stdstringValue() << endl;
+	std::stringstream ss2(par("ignore").stdstringValue());
+	std::string s2;
+	while (ss2 >> s2) {
+		spammers.insert(s2);
+	}
+	///////////// COPYPASTE
 }
 
 void Client::handleMessage(cMessage *msg) {
@@ -53,6 +61,12 @@ void Client::handleMessage(cMessage *msg) {
 			if(acksToReceive == 0) {
 //				emit(0, true);
 				recordScalar("Finish time", simTime());
+				std::set<std::string>::iterator it;
+				for(it = spammers.begin(); it != spammers.end(); ++it) {
+					cMessage* fin = new cMessage("FINISH");
+					cModule* target = getParentModule()->getSubmodule(it->c_str());
+					sendDirect(fin, target, "info");
+				}
 			}
 		} else {
 			ev << "error: received non-ACK packet id=" << pkt->getId() << endl;
